@@ -1076,8 +1076,17 @@ function setupHeirloomHelpBtn() {
 	document.getElementById('selectedHeirloom').children[0].children[0].appendChild(heirloomHelpBtn);
 }
 
+var lastSelectedLoom
+var loomOriginalTexts = [];
+
 function calculate(autoUpgrae) {
 	var selectedLoom = game.global.selectedHeirloom;
+	if (lastSelectedLoom != selectedLoom){
+		loomOriginalTexts = []
+		for (var y = 0; y < selectedLoom.mods.length; y++) {
+			loomOriginalTexts.push(document.getElementsByClassName('heirloomMod')[y].innerHTML);
+		}
+	}
 	var startingHeirloom;
 
 	if (selectedLoom.length === 0) return;
@@ -1179,7 +1188,7 @@ function calculate(autoUpgrae) {
 	if (newHeirloom) {
 		for (var y = 0; y < newHeirloom.mods.length; y++) {
 			if (newHeirloom.purchases[y] === 0) continue;
-			document.getElementsByClassName('heirloomMod')[y].innerHTML += ` (${precisionRoundMod(getModValue(newHeirloom.mods[y], newHeirloom.type), 5)}% +${newHeirloom.purchases[y]})`;
+			document.getElementsByClassName('heirloomMod')[y].innerHTML = loomOriginalTexts[y] + ` (${precisionRoundMod(getModValue(newHeirloom.mods[y], newHeirloom.type), 5)}% +${newHeirloom.purchases[y]})`;
 		}
 	}
 
